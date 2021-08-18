@@ -21,6 +21,7 @@ $GLOBALS['TL_DCA']['tl_turnierbuero'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
+		'ctable'                      => array('tl_turnierbuero_teilnehmer'),
 		'switchToEdit'                => true,
 		'enableVersioning'            => true,
 		'sql' => array
@@ -39,25 +40,25 @@ $GLOBALS['TL_DCA']['tl_turnierbuero'] = array
 		'sorting' => array
 		(
 			'mode'                    => 1,
-			'fields'                  => array('title'),
+			'fields'                  => array('reportingDate'),
 			'flag'                    => 1,
 			'panelLayout'             => 'filter;search,limit'
 		),
 		'label' => array
 		(
-			'fields'                  => array('title', 'typ'),
-			'format'                  => '%s [<i>%s</i>]',
+			'fields'                  => array('title', 'reportingDate', 'beginDate', 'closed'),
+			'format'                  => '%s %S %s %s',
 			'showColumns'             => true,
 		),
 		'global_operations' => array
 		(
-			'meldungen' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_turnierbuero']['meldungen'],
-				'href'                => 'table=tl_turnierbuero_meldungen',
-				'icon'                => 'bundles/contaoturnierbuero/images/meldungen.png',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
-			),
+			//'meldungen' => array
+			//(
+			//	'label'               => &$GLOBALS['TL_LANG']['tl_turnierbuero']['meldungen'],
+			//	'href'                => 'table=tl_turnierbuero_meldungen',
+			//	'icon'                => 'bundles/contaoturnierbuero/images/meldungen.png',
+			//	'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			//),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -70,16 +71,15 @@ $GLOBALS['TL_DCA']['tl_turnierbuero'] = array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_turnierbuero']['edit'],
-				'href'                => 'table=tl_turnierbuero_items',
-				'icon'                => 'edit.gif'
+				'label'               => &$GLOBALS['TL_LANG']['tl_turnierbuero']['editheader'],
+				'href'                => 'table=tl_turnierbuero_teilnehmer',
+				'icon'                => 'edit.gif',
 			),
 			'editheader' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_turnierbuero']['editheader'],
 				'href'                => 'act=edit',
 				'icon'                => 'header.gif',
-				'button_callback'     => array('tl_turnierbuero', 'editHeader')
 			),
 			'copy' => array
 			(
@@ -115,9 +115,16 @@ $GLOBALS['TL_DCA']['tl_turnierbuero'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{title_legend},title;{publish_legend},published'
+		'__selector__'                => array('thema'),
+		'default'                     => '{title_legend},title,tournamentType,kennzeichen;{meeting_legend},reportingDate,beginDate;{options_legend},meldesoll,zugaustausch;{thema_legend:hide},thema;{closed_legend:hide},closed;{publish_legend},published'
 	),
 
+	// Subpalettes
+	'subpalettes' => array
+	(
+		'thema'                       => 'themaName',
+	), 
+	
 	// Fields
 	'fields' => array
 	(
@@ -135,8 +142,121 @@ $GLOBALS['TL_DCA']['tl_turnierbuero'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+			'eval'                    => array
+			(
+				'mandatory'           => true,
+				'maxlength'           => 255,
+				'tl_class'            => 'w50'
+			),
 			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'kennzeichen' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['kennzeichen'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array
+			(
+				'mandatory'           => false,
+				'maxlength'           => 20,
+				'tl_class'            => 'w50'
+			),
+			'sql'                     => "varchar(20) NOT NULL default ''"
+		),
+		'reportingDate' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['reportingDate'],
+			'default'                 => time(),
+			'exclude'                 => true,
+			'filter'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 8,
+			'inputType'               => 'text',
+			'eval'                    => array('rgxp'=>'date', 'mandatory'=>true, 'doNotCopy'=>true, 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
+			'sql'                     => "int(10) unsigned NOT NULL default 0"
+		),
+		'beginDate' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['beginDate'],
+			'default'                 => time(),
+			'exclude'                 => true,
+			'filter'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 8,
+			'inputType'               => 'text',
+			'eval'                    => array('rgxp'=>'date', 'mandatory'=>true, 'doNotCopy'=>true, 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
+			'sql'                     => "int(10) unsigned NOT NULL default 0"
+		),
+		'tournamentType' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['tournamentType'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'                 => &$GLOBALS['TL_LANG']['tl_turnierbuero']['tournamentTypes'],
+			'eval'                    => array
+			(
+				'tl_class'            => 'w50',
+				'includeBlankOption'  => true
+			),
+			'sql'                     => "varchar(5) NOT NULL default ''"
+		),
+		'zugaustausch' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['zugaustausch'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'                 => &$GLOBALS['TL_LANG']['tl_turnierbuero']['zugaustauschTypes'],
+			'eval'                    => array
+			(
+				'tl_class'            => 'w50',
+				'includeBlankOption'  => true
+			),
+			'sql'                     => "varchar(6) NOT NULL default ''"
+		),
+		'meldesoll' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['meldesoll'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array
+			(
+				'mandatory'           => false,
+				'maxlength'           => 4,
+				'tl_class'            => 'w50'
+			),
+			'sql'                     => "int(4) unsigned NOT NULL default 0"
+		),
+		'thema' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['thema'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('submitOnChange'=>true),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+		'themaName' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['themaName'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'closed' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['closed'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'flag'                    => 1,
+			'inputType'               => 'checkbox',
+			'eval'                    => array
+			(
+				'doNotCopy'           => true
+			),
+			'sql'                     => "char(1) NOT NULL default ''"
 		),
 		'published' => array
 		(
@@ -151,7 +271,7 @@ $GLOBALS['TL_DCA']['tl_turnierbuero'] = array
 				'doNotCopy'           => true
 			),
 			'sql'                     => "char(1) NOT NULL default ''"
-		),  
+		),
 	)
 );
 
@@ -187,21 +307,6 @@ class tl_turnierbuero extends Backend
 		{
 			return $this->getTemplateGroup('mod_turnierbuero_');
 		}
-	}
-
-	/**
-	 * Return the edit header button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
-	 */
-	public function editHeader($row, $href, $label, $title, $icon, $attributes)
-	{
-		return ($this->User->isAdmin || count(preg_grep('/^tl_turnierbuero::/', $this->User->alexf)) > 0) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label).'</a> ' : Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
 	}
 
 

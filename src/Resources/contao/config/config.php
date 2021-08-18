@@ -13,5 +13,11 @@
 
 $GLOBALS['BE_MOD']['content']['turnierbuero'] = array
 (
-	'tables'         => array('tl_turnierbuero', 'tl_turnierbuero_meldungen'),
+	'tables'         => array('tl_turnierbuero', 'tl_turnierbuero_teilnehmer', 'tl_turnierbuero_meldungen'),
 );
+
+/**
+ * Inhaltselemente
+ */
+ 
+$GLOBALS['TL_CTE']['chess']['turnierbuero_meldeliste'] = 'Schachbulle\ContaoTurnierbueroBundle\ContentElements\Meldeliste';

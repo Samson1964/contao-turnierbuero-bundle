@@ -1,0 +1,18 @@
+<?php $this->extend('block_searchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<?php if($this->meldungen): ?>
+	<table>
+	<?php for($x = 0; $x < count($this->meldungen); $x++): ?>
+		<?php if($x == 0) $td = 'th'; else $td = 'td'; ?>
+		<tr>
+		<?php for($y = 0; $y < count($this->meldungen[$x]); $y++): ?>
+			<<?= $td ?>><?= $this->meldungen[$x][$y] ?></<?= $td ?>>
+		<?php endfor; ?>
+		</tr>
+	<?php endfor; ?>
+	</table>
+<?php endif; ?>
+
+<?php $this->endblock(); ?>
