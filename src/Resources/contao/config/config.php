@@ -21,3 +21,4 @@ $GLOBALS['BE_MOD']['content']['turnierbuero'] = array
  */
  
 $GLOBALS['TL_CTE']['chess']['turnierbuero_meldeliste'] = 'Schachbulle\ContaoTurnierbueroBundle\ContentElements\Meldeliste';
+$GLOBALS['TL_CTE']['chess']['turnierbuero_meldestatus'] = 'Schachbulle\ContaoTurnierbueroBundle\ContentElements\Meldestatus';

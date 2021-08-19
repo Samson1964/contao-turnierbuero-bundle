@@ -4,12 +4,13 @@
  * Paletten
  */
 $GLOBALS['TL_DCA']['tl_content']['palettes']['turnierbuero_meldeliste'] = '{type_legend},type,headline;{turnierbuero_legend},turnierbuero_id,turnierbuero_colsView;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guest,cssID;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['turnierbuero_meldestatus'] = '{type_legend},type,headline;{turnierbuero_legend},turnierbuero_typid,turnierbuero_typView;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guest,cssID;{invisible_legend:hide},invisible,start,stop';
 
 /**
  * Felder
  */
 
-// Adressenliste anzeigen
+// Turnierliste anzeigen
 $GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_id'] = array
 (
 	'label'                => &$GLOBALS['TL_LANG']['tl_content']['turnierbuero_id'],
@@ -18,13 +19,31 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_id'] = array
 	'inputType'            => 'select',
 	'eval'                 => array
 	(
-		'mandatory'        => true, 
-		'multiple'         => false, 
+		'mandatory'        => true,
+		'multiple'         => false,
 		'chosen'           => true,
 		'submitOnChange'   => false,
 		'tl_class'         => 'long'
 	),
-	'sql'                  => "int(10) unsigned NOT NULL default '0'" 
+	'sql'                  => "int(10) unsigned NOT NULL default '0'"
+);
+
+// Turniertypliste anzeigen
+$GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_typid'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['turnierbuero_typid'],
+	'exclude'                 => true,
+	'options_callback'        => array('tl_content_turnierbuero', 'getTurniertypliste'),
+	'inputType'               => 'select',
+	'eval'                    => array
+	(
+		'mandatory'           => true,
+		'multiple'            => false,
+		'chosen'              => true,
+		'submitOnChange'      => false,
+		'tl_class'            => 'long'
+	),
+	'sql'                     => "varchar(5) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_colsView'] = array
@@ -43,101 +62,26 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_colsView'] = array
 	'sql'                     => 'blob NULL'
 );
 
-//// Funktion (wird vor dem Namen angezeigt)
-//$GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_funktion'] = array
-//(
-//	'label'                => &$GLOBALS['TL_LANG']['tl_content']['turnierbuero_funktion'],
-//	'exclude'              => true,
-//	'search'               => true,
-//	'inputType'            => 'text',
-//	'eval'                 => array('maxlength'=>255, 'tl_class'=>'w50 clr'),
-//	'sql'                  => "varchar(255) NOT NULL default ''"
-//);
-//
-//// Zusatztext (wird zwischen der Funktion und dem Namen angezeigt)
-//$GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_zusatz'] = array
-//(
-//	'label'                => &$GLOBALS['TL_LANG']['tl_content']['turnierbuero_zusatz'],
-//	'exclude'              => true,
-//	'search'               => true,
-//	'inputType'            => 'text',
-//	'eval'                 => array('maxlength'=>255, 'tl_class'=>'w50', 'allowHtml'=>true),
-//	'sql'                  => "varchar(255) NOT NULL default ''"
-//);
-//
-//// Zeigt das Standardfoto aus tl_turnierbueron an
-//$GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_bildvorschau'] = array
-//(
-//	'exclude'              => true,
-//	'input_field_callback' => array('tl_content_turnierbuero', 'getThumbnail'),
-//); 
-//
-//// Alternatives Foto aktivieren
-//$GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_addImage'] = array
-//(
-//	'label'                => &$GLOBALS['TL_LANG']['tl_content']['turnierbuero_addImage'],
-//	'exclude'              => true,
-//	'filter'               => true,
-//	'default'              => true,
-//	'inputType'            => 'checkbox',
-//	'eval'                 => array
-//	(
-//		'submitOnChange'   => true,
-//		'tl_class'         => 'w50'
-//	),
-//	'sql'                  => "char(1) NOT NULL default '1'"
-//);
-//
-//// Alternatives Foto aktivieren
-//$GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_altformat'] = array
-//(
-//	'label'                => &$GLOBALS['TL_LANG']['tl_content']['turnierbuero_altformat'],
-//	'exclude'              => true,
-//	'filter'               => true,
-//	'default'              => false,
-//	'inputType'            => 'checkbox',
-//	'eval'                 => array
-//	(
-//		'submitOnChange'   => true,
-//		'tl_class'         => 'w50'
-//	),
-//	'sql'                  => "char(1) NOT NULL default ''"
-//);
-//
-//// Nur bestimmte Adressen aktivieren einschalten
-//$GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_selectmails'] = array
-//(
-//	'label'                => &$GLOBALS['TL_LANG']['tl_content']['turnierbuero_selectmails'],
-//	'exclude'              => true,
-//	'filter'               => true,
-//	'inputType'            => 'checkbox',
-//	'eval'                 => array
-//	(
-//		'submitOnChange'   => true,
-//		'tl_class'         => 'clr w50'
-//	),
-//	'sql'                  => "char(1) NOT NULL default ''"
-//);
-//
-//// Anzuzeigende Adressen auswählen
-//$GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_mails'] = array
-//(
-//	'label'                => &$GLOBALS['TL_LANG']['tl_content']['turnierbuero_mails'],
-//	'exclude'              => true,
-//	'inputType'            => 'checkboxWizard',
-//	'options_callback'     => array('tl_content_turnierbuero', 'getMails'),
-//	'eval'                 => array
-//	(
-//		'tl_class'         => 'w50', 
-//		'multiple'         => true
-//	),
-//	'sql'                  => "varchar(64) NOT NULL default ''"
-//);
+$GLOBALS['TL_DCA']['tl_content']['fields']['turnierbuero_typView'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['turnierbuero_typView'],
+	'exclude'                 => true,
+	'filter'                  => true,
+	'inputType'               => 'checkboxWizard',
+	'options'                 => &$GLOBALS['TL_LANG']['tl_content']['turnierbuero_typView_array'],
+	'default'                 => is_array($GLOBALS['TL_LANG']['tl_content']['turnierbuero_typView_array']) ? array_keys($GLOBALS['TL_LANG']['tl_content']['turnierbuero_typView_array']) : '',
+	'eval'                    => array
+	(
+		'multiple'            => true,
+		'tl_class'            => 'w50'
+	),
+	'sql'                     => 'blob NULL'
+);
 
 /*****************************************
  * Klasse tl_content_turnierbuero
  *****************************************/
- 
+
 class tl_content_turnierbuero extends Backend
 {
 
@@ -162,6 +106,36 @@ class tl_content_turnierbuero extends Backend
 				$array[$objTurnier->id] = $objTurnier->title.' (Meldeschluß: '.date('d.m.Y', $objTurnier->reportingDate).')';
 			}
 		}
+		return $array;
+
+	}
+
+	public function getTurniertypliste(DataContainer $dc)
+	{
+		$array = array();
+		$typen = array();
+		$objTurnier = \Database::getInstance()->prepare("SELECT * FROM tl_turnierbuero")
+		                                      ->execute();
+
+		\System::loadLanguageFile('tl_turnierbuero'); // Spracharray laden, um Turniertypen anzeigen
+
+		while($objTurnier->next())
+		{
+			if($objTurnier->published)
+			{
+				// Turnieranzahl für jeden Turniertyp zählen
+				if(isset($typen[$objTurnier->tournamentType])) $typen[$objTurnier->tournamentType]++;
+				else $typen[$objTurnier->tournamentType] = 1;
+			}
+		}
+
+		// Liste erstellen
+		foreach($typen as $key => $value)
+		{
+			$string = $value == 1 ? 'Turnier' : 'Turniere';
+			if($key) $array[$key] = $GLOBALS['TL_LANG']['tl_turnierbuero']['tournamentTypes'][$key].' ('.$value.' '.$string.')';
+		}
+
 		return $array;
 
 	}

@@ -32,6 +32,8 @@ class Meldeliste extends \ContentElement
 				// Kopfspalten der Ausgabetabelle erstellen
 				$meldungen = array();
 				$kopfspalten = unserialize($this->turnierbuero_colsView);
+				if(!is_array($kopfspalten)) return;
+
 				foreach($kopfspalten as $spalte)
 				{
 					$meldungen[0][] = $GLOBALS['TL_LANG']['tl_content']['turnierbuero_colsView_array'][$spalte];

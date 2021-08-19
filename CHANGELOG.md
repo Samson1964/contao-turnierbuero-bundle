@@ -1,5 +1,9 @@
 # Turnierbüro Changelog
 
+## Version 0.0.4 (2021-08-19)
+
+* Add: Inhaltselement Meldestatus.php inkl. Frontend-Ausgabe
+
 ## Version 0.0.3 (2021-08-19)
 
 * Add: Sprachdateien für Frontend eingebunden (Meldeliste.php)
