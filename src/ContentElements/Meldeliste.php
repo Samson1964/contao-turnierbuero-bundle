@@ -27,6 +27,8 @@ class Meldeliste extends \ContentElement
 			if($objTurnier)
 			{
 
+				\System::loadLanguageFile('tl_content'); // Sprachdateien laden
+
 				// Kopfspalten der Ausgabetabelle erstellen
 				$meldungen = array();
 				$kopfspalten = unserialize($this->turnierbuero_colsView);

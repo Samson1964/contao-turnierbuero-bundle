@@ -159,7 +159,7 @@ class tl_content_turnierbuero extends Backend
 		{
 			if($objTurnier->published)
 			{
-				$array[$objTurnier->id] = $objTurnier->title.' (Meldeschluß: '.$objTurnier->reportingDate.')';
+				$array[$objTurnier->id] = $objTurnier->title.' (Meldeschluß: '.date('d.m.Y', $objTurnier->reportingDate).')';
 			}
 		}
 		return $array;
