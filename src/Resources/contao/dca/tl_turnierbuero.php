@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_turnierbuero'] = array
 		),
 		'label' => array
 		(
-			'fields'                  => array('title', 'reportingDate', 'beginDate', 'closed'),
+			'fields'                  => array('title', 'kennzeichen', 'reportingDate', 'beginDate', 'closed'),
 			'format'                  => '%s %S %s %s',
 			'showColumns'             => true,
 		),
@@ -115,14 +115,15 @@ $GLOBALS['TL_DCA']['tl_turnierbuero'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'                => array('thema'),
-		'default'                     => '{title_legend},title,tournamentType,kennzeichen;{meeting_legend},reportingDate,beginDate;{options_legend},meldesoll,zugaustausch;{thema_legend:hide},thema;{closed_legend:hide},closed;{publish_legend},published'
+		'__selector__'                => array('thema', 'meldeist_view'),
+		'default'                     => '{title_legend},title,tournamentType,kennzeichen;{meeting_legend},reportingDate,beginDate;{options_legend},meldesoll,zugaustausch,meldeist_view;{thema_legend:hide},thema;{closed_legend:hide},closed;{publish_legend},published'
 	),
 
 	// Subpalettes
 	'subpalettes' => array
 	(
 		'thema'                       => 'themaName',
+		'meldeist_view'               => 'meldeist',
 	), 
 	
 	// Fields
@@ -159,10 +160,10 @@ $GLOBALS['TL_DCA']['tl_turnierbuero'] = array
 			'eval'                    => array
 			(
 				'mandatory'           => false,
-				'maxlength'           => 20,
+				'maxlength'           => 30,
 				'tl_class'            => 'w50'
 			),
-			'sql'                     => "varchar(20) NOT NULL default ''"
+			'sql'                     => "varchar(30) NOT NULL default ''"
 		),
 		'reportingDate' => array
 		(
@@ -217,6 +218,35 @@ $GLOBALS['TL_DCA']['tl_turnierbuero'] = array
 		'meldesoll' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['meldesoll'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array
+			(
+				'mandatory'           => false,
+				'maxlength'           => 4,
+				'tl_class'            => 'w50'
+			),
+			'sql'                     => "int(4) unsigned NOT NULL default 0"
+		),
+		'meldeist_view' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['meldeist_view'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'flag'                    => 1,
+			'inputType'               => 'checkbox',
+			'eval'                    => array
+			(
+				'doNotCopy'           => true,
+				'submitOnChange'      => true,
+				'tl_class'            => 'w50'
+			),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+		'meldeist' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_turnierbuero']['meldeist'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',

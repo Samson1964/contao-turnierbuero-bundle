@@ -1,5 +1,11 @@
 # Turnierbüro Changelog
 
+## Version 0.0.5 (2021-08-21)
+
+* Change: tl_turnierbuero.kennzeichen von 20 auf 30 Zeichen erhöht
+* Add: Turnierliste jetzt mit Ausgabe von kennzeichen
+* Add: Bei Ausgabe von der Anzahl der Meldungen hilft jetzt das Feld tl_turnierbuero.meldeist. Dummy-Einträge bei den Meldungen sind nicht mehr nötig.
+
 ## Version 0.0.4 (2021-08-19)
 
 * Add: Inhaltselement Meldestatus.php inkl. Frontend-Ausgabe

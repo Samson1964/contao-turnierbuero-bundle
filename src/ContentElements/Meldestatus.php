@@ -43,19 +43,27 @@ class Meldestatus extends \ContentElement
 				while($objTurnier->next())
 				{
 
-					// Meldungen auslesen
-					$objMeldung = \Database::getInstance()->prepare("SELECT * FROM tl_turnierbuero_teilnehmer WHERE pid = ? AND published = ?")
-					                                      ->execute($objTurnier->id, 1);
-
-					// Meldungen zählen
+					// Anzahl der Meldungen ermitteln
 					$anzahl = 0;
-					if($objMeldung->numRows)
+					if($objTurnier->meldeist_view)
 					{
-						while($objMeldung->next())
+						// Keine Zählung der Meldungen erwünscht, Ist-Zahl aus Turnier-Einstellungen holen
+						$anzahl = $objTurnier->meldeist;
+					}
+					else
+					{
+						// Meldungen auslesen
+						$objMeldung = \Database::getInstance()->prepare("SELECT * FROM tl_turnierbuero_teilnehmer WHERE pid = ? AND published = ?")
+						                                      ->execute($objTurnier->id, 1);
+						// Meldungen zählen
+						if($objMeldung->numRows)
 						{
-							for($x = 1; $x <= $objMeldung->number; $x++)
+							while($objMeldung->next())
 							{
-								$anzahl++;
+								for($x = 1; $x <= $objMeldung->number; $x++)
+								{
+									$anzahl++;
+								}
 							}
 						}
 					}

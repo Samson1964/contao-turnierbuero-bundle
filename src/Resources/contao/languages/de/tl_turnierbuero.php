@@ -21,8 +21,10 @@ $GLOBALS['TL_LANG']['tl_turnierbuero']['reportingDate'] = array('Meldedatum', 'D
 $GLOBALS['TL_LANG']['tl_turnierbuero']['beginDate'] = array('Startdatum', 'Datum des Turnierbeginns');
 
 $GLOBALS['TL_LANG']['tl_turnierbuero']['options_legend'] = 'Optionen';
-$GLOBALS['TL_LANG']['tl_turnierbuero']['meldesoll'] = array('Spielersoll', 'Mindestanzahl benötigter Spieler');
+$GLOBALS['TL_LANG']['tl_turnierbuero']['meldesoll'] = array('Spieler-Soll', 'Mindestanzahl benötigter Spieler');
 $GLOBALS['TL_LANG']['tl_turnierbuero']['zugaustausch'] = array('Zugaustausch', 'Art des Zugaustausches');
+$GLOBALS['TL_LANG']['tl_turnierbuero']['meldeist_view'] = array('Eigenes Spieler-Ist verwenden', 'Eigenes Spieler-Ist verwenden (spielt nur eine Rolle bei Ausgabe der Anzahl der Meldungen).');
+$GLOBALS['TL_LANG']['tl_turnierbuero']['meldeist'] = array('Spieler-Ist', 'Bei der Ausgabe der Anzahl gemeldeter Spieler wird diese Zahl verwendet. Eine Zählung der Meldungen erfolgt dann nicht!');
 
 $GLOBALS['TL_LANG']['tl_turnierbuero']['thema_legend'] = 'Thematurnier';
 $GLOBALS['TL_LANG']['tl_turnierbuero']['thema'] = array('Thematurnier', 'Thematurnier aktivieren');
