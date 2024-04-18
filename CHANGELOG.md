@@ -1,5 +1,11 @@
 # Turnierbüro Changelog
 
+## Version 0.1.0 (2024-04-18)
+
+* Add: codefog/contao-haste
+* Change: Haste-Toggler statt des normalen Togglers
+* Add: Kompatibilität PHP 8
+
 ## Version 0.0.5 (2021-08-21)
 
 * Change: tl_turnierbuero.kennzeichen von 20 auf 30 Zeichen erhöht
